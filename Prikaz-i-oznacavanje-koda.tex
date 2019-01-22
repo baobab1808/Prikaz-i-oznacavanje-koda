@@ -1,0 +1,135 @@
+\documentclass{beamer}
+\usetheme{Boadilla}
+\usecolortheme{seahorse}
+\usefonttheme{structureitalicserif}
+
+\usepackage[croatian]{babel} 
+\usepackage[utf8]{inputenc} 
+\usepackage{listings}
+%\bibliography{bibliography.bib}
+\setcounter{tocdepth}{2}
+
+\title{Prikaz i označavanje koda}
+\subtitle{Paketi za prikaz i označavanje kodova, pseudo-kodova i algoritama različitih programskih jezika.}
+\author{Lucija Žužić i  Barbara Breš}
+\institute{Sveučilište u Rijeci, Tehnički fakultet}
+\date{\today}
+
+\begin{document}
+ 
+	\begin{frame}	
+		\titlepage	
+	\end{frame}	
+
+	\begin{frame}
+		\frametitle{Sadržaj}
+		\tableofcontents
+	\end{frame}
+
+	\section{Paket listings}	
+
+	\begin{frame}[fragile]
+		\frametitle{Značajke paketa i kompatibilnost}
+		\begin{itemize}
+			\begin{item}
+				 Onemogućuje dodatno procesiranje teksta kao Latex naredbi, tekst se ispisuje kako je unesen  
+			\end{item}
+			\begin{item}
+				Podržava većinu najčešćih programskih jezika, pruža mnogo opcija prilagodbe
+			\end{item}
+			\begin{item}
+				Označava ključne riječi jezika drugačijom bojom, podebljanim ili ukošenim tekstom, broji linije koda
+			\end{item}
+			\begin{item}	
+				Za korištenje moramo instalirati paket listings s interneta (pomoću package managera kojeg koristimo uz Latex editor) i u preambuli dokumenta moramo napisati \verb|\usepackage{listings}| 
+			\end{item}
+		\end{itemize}
+		\begin{alertblock}{Kompatibilnost s beamer paketom}
+				Ako koristimo neprocesirani tekst (listings paket i drugi) zajedno s beamer paketom (prezentacije), moramo dodati fragile opciju na svaki frame (okvir)
+		\end{alertblock}
+	\end{frame}
+	
+	\begin{frame}[fragile]
+		\frametitle{Kod unutar dokumenta}
+		\begin{block}{Veći dijelovi koda}
+			Koristimo lstlisting okruženje (environment): \verb|\begin{lstlisting} Neki kod \end{lstlisting}|
+		\end{block}
+		\begin{block}{Kraći kod}
+			Ako želimo integrirati kod s ostatkom teksta koristimo: \verb|\lstinline{Neki kod}|
+		\end{block}
+		\begin{block}{Vanjski kod}
+		Ako smo izvorni kod napisali u drugoj datoteci, praktično je uvesti ga i ažurirati ponovnim kompajliranjem LaTex dokumenta u slučaju izmjena.
+		\verb|\lstinputlisting{izvorni_kod.ekstenzija}|
+		\end{block}
+	\end{frame}
+	\begin{frame}[fragile]
+		\frametitle{Postavke i stilovi}
+		Postavke definiramo na više načina:
+		\begin{itemize}
+			\begin{item}
+			U istoj naredbi u kojoj uključujemo datoteku s kodom: \verb|\lstinputlisting[postavka1, postavka2]{izvorni_kod.py}|
+			\end{item}
+			\begin{item}			
+			U naredbi u kojoj započinjemo listings okruženje: \verb|\begin{lstlisting}[postavka1, postavka2]|
+			\end{item}
+			\begin{item}
+Unutar naredbe \verb|\lstset{}| koja se može nalaziti bilo gdje u kodu, prije ili poslije \verb|\begin{document}|, postavke se primjenjuju na sav kod do iduće naredbe koja ih mijenja
+			\end{item}
+		\end{itemize}
+		\begin{block}{Definiranje više stilova}
+				Naredbom \verb|\lstdefinestyle{ime_stila}{postavka1, postavka2}| definiramo stil koji možemo koristiti više puta pomoću \verb|\lstset{sytle=ime_stila}|
+		\end{block}
+	\end{frame}
+	\begin{frame}[fragile]
+		\frametitle{Dodatni paketi}
+		\begin{block}{Paket xcolor i color}
+		Paketi xcolor ili color su potrebni za neke od postavki obojanja teksta ili pozadine. Uključujemo ih u dokument pomoću
+\verb|\usepackage{color}| ili \verb|\usepackage{xcolor}|.
+Osim standradnih boja možemo definirati svoje nijanse: \verb|\definecolor{mycolor}{rgb}{0.7,0.6,0.8}|
+Boje pozivamo naredbom \verb|\color{name}|.
+	\end{block}
+	\end{frame}
+	
+	\begin{frame}[fragile]
+		\frametitle{Osnovne postavke (1. dio)}
+		\begin{description}
+			\item[language=Python] Ako ne definiramo programski jezik, nemamo dodatne opcije procesiranja koje vrijede za njega
+			\item[firstline=37, lastline=55] Raspon linija koji će se prikazati (uključivo s navedenim), definiran samo firstline = linije prije odabrane, samo lastline = linije nakon odabrane
+			\item[backgrouncolor=] Odabir boje pozadine, npr. \verb|\color{white}|, trebao bi biti poslijednji argument, potreban paket xcolor ili color
+			\item[caption=tekst] Opis koji se prikazuje uz kod
+			\item[captionpos=b] Pozicija opisa, b = dno, t = vrh, h = trenuta lokacija u dokumentu, p = posebna stranica, isto kao za float elemente sliku ili tablicu
+			\item[morekeywords=] Dodajemo još ključnih riječi koje se označuju, navodimo ih unutar vitičastih zagrada odvojene zarezima
+			\item[deletekeywords=] Brišemo ključne riječi jezika, navodimo ih unutar vitičastih zagrada odvojene zarezima
+			\end{description}
+	\end{frame}
+\begin{frame}[fragile]
+		\frametitle{Osnovne postavke (2. dio)}
+		\begin{description}
+			\item[keywordstyle=] Mijenjamo boju i veličinu ključnih riječi
+			\item[basicstyle=] Mijenjamo boju i veličinu običnog koda, koji nije ključna riječ ni komentar ni string
+			\item[stringstyle=] Mijenjamo boju i veličinu stringova, riječi
+			\item[commentstyle=] Mijenjamo boju i veličinu komentara
+			\item[numberstyle=] Stil brojeva linije
+			\item[numbers=left] Broj linije koda će biti lijevo (left), desno (right), ili izostavljen (none)
+			\item[numbersep=5pt] Razmak između koda i broja linija
+			\item[stepnumber=2] Svaka n – ta linija je numerirana, razmak između numeriranih linija
+			\item[listoflistings] Ispisuje popis captiona listings okruženja u dokumentu
+			\item[escapeinside=] Privremeno izlazimo iz listings okruženja, između dva znaka navedena svaki u zasebnim vitičastim zagradama tekst se procesira kao Latex naredbe
+			\end{description}
+		\end{frame}
+		\begin{frame}[fragile]
+		\frametitle{Osnovne postavke (3. dio)}
+		\begin{description}
+			\item[showstringspaces=true] Prikazuje razmake unutar stringova pomoću znaka breve, koji izgleda kao donja polovica kruga, ako ne postavimo je false
+			\item[showspaces=true] Prikazuje sve razmake pomoću znaka breve, koji izgleda kao donja polovica kruga, poništava showstringsspaces, ako ne postavimo je false
+			\item[showtabs=true] Prikazuje tabulatore pomoću strelice usmjerene slijeva nadesno, ako ne postavimo je false
+			\item[tabsize=2] Veličina tabulatora u razmacima
+			\item[title=] Dodajemo naslov kodu
+			\item[xleftmargin=, xrightmargin=] Veličina dodatne lijeve ili desne margine
+			\item[frame=] none - nema, default, leftline - lijeva linija, topline - gornja linija, bottomline - donja linija, lines - linija na vrhu i dnu, single - okvir, shadowbox - osjenčana kutija
+			
+			\item[frameround] -  
+
+			\end{description}
+	\end{frame}
+\end{document}
